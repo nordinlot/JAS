@@ -109,6 +109,31 @@
       border: 1px solid #94a3b8;
       padding: 8px 10px;
     }
+
+    /* Cop Rasmi Syarikat Berdakwat Biru (Stamp Aesthetic) */
+    .official-blue-stamp {
+      font-family: 'Arial Narrow', 'Roboto Condensed', Arial, sans-serif;
+      color: #1d4ed8;
+      border: 2px solid #1d4ed8;
+      border-radius: 5px;
+      padding: 8px 12px;
+      text-align: center;
+      background-color: rgba(239, 246, 255, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.25);
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      text-shadow: 0 0 0.4px rgba(29, 78, 216, 0.55);
+      user-select: none;
+    }
+    @media print {
+      .official-blue-stamp {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background-color: transparent !important;
+        border: 1.8px solid #1d4ed8 !important;
+        color: #1d4ed8 !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -460,19 +485,30 @@
 
         <!-- Digital Signature / Cop Pengesahan -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-slate-700 uppercase">F. Tandatangan Digital & Cop Premis</span>
-            <button onclick="clearSignaturePad()" class="text-xs font-semibold text-rose-600 hover:underline">Padam Tandatangan</button>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-bold text-slate-700 uppercase">F. Tandatangan Digital & Cop Rasmi Premis</span>
+            <div class="flex items-center gap-3">
+              <label class="inline-flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+                <input type="checkbox" id="toggle-official-stamp" checked onchange="toggleOfficialStamp(this.checked)" class="rounded text-blue-700 focus:ring-blue-600" />
+                <span>Papar Cop Rasmi Syarikat</span>
+              </label>
+              <button onclick="clearSignaturePad()" class="text-xs font-semibold text-rose-600 hover:underline">Padam Tandatangan</button>
+            </div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl overflow-hidden relative">
               <canvas id="signature-canvas" class="w-full h-28 touch-none cursor-crosshair block"></canvas>
               <span class="absolute bottom-1.5 right-2.5 text-[10px] text-slate-400 pointer-events-none">Tandatangan di sini</span>
             </div>
-            <div class="border-2 border-blue-900/80 rounded-xl p-3 text-center text-blue-900 bg-blue-50/40 select-none">
-              <p class="text-xs font-extrabold tracking-wide uppercase">SCK WOODEN INDUSTRIES SDN. BHD.</p>
-              <p class="text-[11px] font-bold">(0528956-D)</p>
-              <p class="text-[10px] mt-1 leading-tight">Batu 27, Jalan Kemaman, Kg. Cherating,<br/>26080 Kuantan, Pahang Darul Makmur.</p>
+            <div id="official-stamp-preview-box" class="official-blue-stamp transition-opacity duration-200">
+              <p class="text-[12px] sm:text-[13px] font-extrabold tracking-wide uppercase">SCK WOODEN INDUSTRIES SDN. BHD.</p>
+              <p class="text-[10.5px] font-bold">(528956-D)</p>
+              <p class="text-[9.5px] sm:text-[10px] font-bold uppercase mt-1 leading-snug">
+                BATU 27, JALAN KUANTAN / KEMAMAN,<br/>
+                KAMPUNG CHERATING, 26080 KUANTAN,<br/>
+                PAHANG DARUL MAKMUR, MALAYSIA.<br/>
+                TEL: 09-5819075 / 654 &nbsp;&nbsp; FAX: 09-5819636
+              </p>
             </div>
           </div>
         </div>
@@ -711,7 +747,7 @@
       return {
         profile: {
           premiseName: 'SCK Wooden Industries Sdn Bhd',
-          premiseAddress: 'Batu 27, Jalan Kemaman, Kg. Cherating, 26080 KUANTAN',
+          premiseAddress: 'Batu 27, Jalan Kuantan / Kemaman, Kampung Cherating, 26080 KUANTAN',
           jasFileNo: 'JAS.CGB.600-3/4/44',
           industryType: 'Kilang Kayu',
           officerName: 'MOHAMAD NORDIN BIN MOHAMMED LOT',
@@ -731,6 +767,7 @@
         incidentSummary: 'Tiada kejadian pencemaran atau pelepasan luar biasa direkodkan sepanjang tempoh pelaporan.',
         improvementSummary: 'Pemantauan harian setiap hari bekerja serta penyelenggaraan berkala sistem LEV dan dust collector diteruskan secara konsisten bagi kesiapsiagaan cuaca panas dan kering.',
         signatureDataUrl: '',
+        showOfficialStamp: true,
         submissions: []
       };
     }
@@ -738,7 +775,7 @@
     let appState = loadState();
 
     // =========================================================================
-    // 2. DYNAMIC iOS APP ICON & PWA MANIFEST GENERATOR
+    // 2. DYNAMIC iOS APP ICON & MANIFEST GENERATOR
     // =========================================================================
     function generateIosAppIcon() {
       const canvas = document.createElement('canvas');
@@ -746,35 +783,35 @@
       canvas.height = 512;
       const ctx = canvas.getContext('2d');
 
-      // Rich Forest Emerald Gradient Background
-      const bgGrad = ctx.createLinearGradient(0, 0, 512, 512);
-      bgGrad.addColorStop(0, '#065f46');
-      bgGrad.addColorStop(0.55, '#047857');
-      bgGrad.addColorStop(1, '#022c22');
-      ctx.fillStyle = bgGrad;
+      // Background Gradient (Deep Emerald to Forest Teal)
+      const grad = ctx.createLinearGradient(0, 0, 512, 512);
+      grad.addColorStop(0, '#065f46');
+      grad.addColorStop(0.55, '#064e3b');
+      grad.addColorStop(1, '#022c22');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 512, 512);
 
-      // Subtle decorative ring
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
-      ctx.lineWidth = 10;
+      // Subtle Decorative Grid Rings
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.arc(256, 232, 165, 0, Math.PI * 2);
+      ctx.arc(256, 230, 195, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Shield Emblem
+      // White Shield Emblem
       ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(256, 78);
-      ctx.lineTo(386, 128);
-      ctx.lineTo(386, 245);
-      ctx.quadraticCurveTo(386, 342, 256, 392);
-      ctx.quadraticCurveTo(126, 342, 126, 245);
-      ctx.lineTo(126, 128);
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.96)';
       ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
       ctx.shadowBlur = 24;
       ctx.shadowOffsetY = 10;
+      ctx.beginPath();
+      ctx.moveTo(256, 72);
+      ctx.lineTo(396, 126);
+      ctx.lineTo(396, 240);
+      ctx.bezierCurveTo(396, 326, 330, 382, 256, 408);
+      ctx.bezierCurveTo(182, 382, 116, 326, 116, 240);
+      ctx.lineTo(116, 126);
+      ctx.closePath();
+      ctx.fillStyle = '#ffffff';
       ctx.fill();
       ctx.restore();
 
@@ -1367,6 +1404,16 @@
       saveState();
     }
 
+    function toggleOfficialStamp(isChecked) {
+      appState.showOfficialStamp = isChecked;
+      const box = document.getElementById('official-stamp-preview-box');
+      if (box) {
+        box.style.opacity = isChecked ? '1' : '0.2';
+      }
+      saveState();
+      showToast(isChecked ? 'Cop rasmi syarikat dipaparkan.' : 'Cop rasmi syarikat disembunyikan.');
+    }
+
     // =========================================================================
     // 7. OFFICIAL PDF / PRINT RENDERER (LAMPIRAN A + DAILY CHECKLIST)
     // =========================================================================
@@ -1376,6 +1423,19 @@
       const endStr = formatDateMY(appState.reportPeriod.endDate);
       const signStr = formatDateMY(appState.reportPeriod.signDate);
       const dates = getDatesInRange(appState.reportPeriod.startDate, appState.reportPeriod.endDate);
+
+      const officialStampHtml = appState.showOfficialStamp !== false ? `
+        <div class="official-blue-stamp" style="display:inline-block; max-width:270px; margin:0 auto;">
+          <div style="font-size: 9.5pt; font-weight: bold; letter-spacing: 0.3px;">SCK WOODEN INDUSTRIES SDN. BHD.</div>
+          <div style="font-size: 8pt; font-weight: bold;">(528956-D)</div>
+          <div style="font-size: 7.2pt; font-weight: bold; margin-top: 2px; line-height: 1.25;">
+            BATU 27, JALAN KUANTAN / KEMAMAN,<br/>
+            KAMPUNG CHERATING, 26080 KUANTAN,<br/>
+            PAHANG DARUL MAKMUR, MALAYSIA.<br/>
+            TEL: 09-5819075 / 654 &nbsp;&nbsp; FAX: 09-5819636
+          </div>
+        </div>
+      ` : '<div style="height:60px;"></div>';
 
       const dailyRowsHtml = dates.map(dStr => {
         const log = appState.dailyLogs[dStr];
@@ -1487,17 +1547,14 @@
           <p style="font-size: 9pt; margin-bottom: 8px;">Saya mengesahkan bahawa maklumat yang dikemukakan dalam laporan ini adalah benar dan tepat.</p>
           <table style="width: 100%; font-size: 9.5pt;">
             <tr>
-              <td style="width: 60%; vertical-align: top;">
+              <td style="width: 55%; vertical-align: top;">
                 <p>Nama : <strong>${p.officerName}</strong></p>
                 <p>Jawatan : <strong>${p.officerRole}</strong></p>
                 <p>Tandatangan : ${appState.signatureDataUrl ? `<br/><img src="${appState.signatureDataUrl}" style="height:45px;"/>` : '_______________________'}</p>
                 <p>Tarikh : <strong>${signStr}</strong></p>
               </td>
-              <td style="width: 40%; vertical-align: middle; text-align: center;">
-                <div style="border: 2px solid #1e3a8a; color: #1e3a8a; padding: 8px; font-size: 8pt; font-weight: bold;">
-                  SCK WOODEN INDUSTRIES SDN. BHD.<br/>(0528956-D)<br/>
-                  Batu 27, Jalan Kemaman, Kg. Cherating,<br/>26080 Kuantan, Pahang.
-                </div>
+              <td style="width: 45%; vertical-align: middle; text-align: center;">
+                ${officialStampHtml}
               </td>
             </tr>
           </table>
@@ -1722,6 +1779,13 @@ E-mel : ${p.officerEmail}`;
 
       const todayStr = getTodayISO();
       document.getElementById('daily-date-picker').value = todayStr;
+
+      const stampCheckbox = document.getElementById('toggle-official-stamp');
+      if (stampCheckbox) {
+        stampCheckbox.checked = appState.showOfficialStamp !== false;
+        const box = document.getElementById('official-stamp-preview-box');
+        if (box) box.style.opacity = stampCheckbox.checked ? '1' : '0.2';
+      }
 
       updateBannerStats();
       renderDailyForm();
