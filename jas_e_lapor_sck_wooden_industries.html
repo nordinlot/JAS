@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>JAS E-Lapor | SCK Wooden Industries Sdn Bhd</title>
+
+  <!-- iOS Web App / PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JAS E-Lapor SCK" />
+  <meta name="theme-color" content="#064e3b" />
+  <link id="apple-touch-icon-link" rel="apple-touch-icon" sizes="180x180" href="" />
+  <link id="favicon-link" rel="icon" type="image/png" href="" />
+  <link id="manifest-link" rel="manifest" href="" />
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            emerald: {
+              850: '#064e3b',
+              900: '#022c22',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Smooth custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    /* Official Print Layout for Lampiran A + Checklist */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 10.5pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .print-page-break {
+        page-break-before: always;
+      }
+      .official-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .official-table th,
+      .official-table td {
+        border: 1px solid #000000 !important;
+        padding: 5px 7px !important;
+        vertical-align: top;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 12mm 14mm;
+      }
+    }
+
+    .print-only {
+      display: none;
+    }
+
+    /* Official Table Styling on Screen */
+    .official-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .official-table th,
+    .official-table td {
+      border: 1px solid #94a3b8;
+      padding: 8px 10px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ==================== APP HEADER (NO-PRINT) ==================== -->
+  <header class="no-print bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-800 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <img id="header-app-logo" src="" alt="Logo JAS E-Lapor SCK" class="w-11 h-11 rounded-2xl shadow-md border border-emerald-400/40 shrink-0 bg-emerald-950" />
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base sm:text-lg tracking-tight truncate">JAS E-Lapor SCK</h1>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-100 border border-emerald-400/30">
+              JAS.CGB.600-3/4/44
+            </span>
+          </div>
+          <p class="text-xs text-emerald-100/90 truncate">SCK Wooden Industries Sdn Bhd • Cawangan Gebeng</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button onclick="openIosModal()" class="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 active:scale-95 transition text-white text-xs font-semibold px-3 py-2 rounded-xl border border-white/20 shadow-sm" title="Pasang Logo Aplikasi di iPhone / iOS">
+          <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <span>Logo iOS</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="max-w-5xl mx-auto px-3 pb-2.5">
+      <div class="grid grid-cols-3 gap-1.5 bg-emerald-950/60 p-1 rounded-2xl border border-emerald-700/40">
+        <button id="tab-btn-daily" onclick="switchTab('daily')" class="tab-btn flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white text-emerald-900 shadow">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="truncate">1. Harian (OK/Tak)</span>
+        </button>
+
+        <button id="tab-btn-report" onclick="switchTab('report')" class="tab-btn flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:bg-white/10">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="truncate">2. Laporan 2 Minggu</span>
+        </button>
+
+        <button id="tab-btn-email" onclick="switchTab('email')" class="tab-btn flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-emerald-100 hover:bg-white/10">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span class="truncate">3. E-mel JAS</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== STATUS BANNER (NO-PRINT) ==================== -->
+  <div class="no-print max-w-5xl w-full mx-auto px-4 pt-4">
+    <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-slate-500">Kitaran Pelaporan Setiap 2 Minggu (El-Nino & Kawalan Habuk)</p>
+          <p id="banner-cycle-text" class="text-sm font-bold text-slate-800">Tempoh Semasa: 16/11/2026 – 30/11/2026</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="banner-logged-badge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          0 Hari Direkod
+        </span>
+        <button onclick="loadDemoData()" class="text-xs font-semibold text-slate-600 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 px-3 py-1.5 rounded-xl border border-slate-200 transition">
+          Isi Contoh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT CONTAINER (NO-PRINT) ==================== -->
+  <main class="no-print max-w-5xl w-full mx-auto px-4 py-4 flex-1 space-y-5">
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: CHECKLIST HARIAN (SETIAP HARI BEKERJA)                         -->
+    <!-- ===================================================================== -->
+    <section id="section-daily" class="space-y-5">
+      <!-- Date & Working Day Controls -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">Pemantauan Harian Kilang</span>
+            <h2 class="text-lg font-bold text-slate-900 mt-1.5">Checklist Kawalan Pencemaran Udara & Habuk</h2>
+            <p class="text-xs text-slate-500">Tandakan status setiap hari bekerja sebelum dihantar setiap 2 minggu ke JAS.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <div>
+              <label for="daily-date-picker" class="block text-[11px] font-semibold text-slate-500 mb-0.5">Tarikh Pemeriksaan</label>
+              <input type="date" id="daily-date-picker" onchange="onDailyDateChange()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Working Day vs Holiday Toggle + Quick OK All Button -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/70">
+          <div class="flex items-center gap-2">
+            <button id="btn-status-working" onclick="setDayType('working')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition bg-emerald-700 text-white shadow-sm">
+              Hari Bekerja (Operasi)
+            </button>
+            <button id="btn-status-off" onclick="setDayType('off')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-100">
+              Cuti / Kilang Tutup
+            </button>
+          </div>
+
+          <button id="btn-mark-all-ok" onclick="markAllDailyOk()" class="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Tanda Semua OK (Baik)</span>
+          </button>
+        </div>
+
+        <!-- Off-day notice -->
+        <div id="off-day-notice" class="hidden bg-slate-100 border border-slate-300 rounded-xl p-4 text-center space-y-1">
+          <p class="text-sm font-bold text-slate-700">Tarikh ini ditandakan sebagai Cuti / Tidak Beroperasi</p>
+          <p class="text-xs text-slate-500">Tiada pemeriksaan operasi diperlukan pada hari tidak bekerja. Klik "Hari Bekerja (Operasi)" jika kilang beroperasi.</p>
+        </div>
+
+        <!-- 6 Official Daily Checklist Items -->
+        <div id="daily-items-container" class="space-y-3">
+          <!-- Rendered dynamically via JS -->
+        </div>
+
+        <!-- Catatan / Tindakan Pembetulan Harian -->
+        <div id="daily-notes-wrapper" class="pt-2">
+          <label for="daily-notes" class="block text-xs font-bold text-slate-700 mb-1">
+            Catatan / Tindakan Pembetulan Harian <span class="font-normal text-slate-400">(Wajib diisi jika ada item "Tak Okay")</span>
+          </label>
+          <textarea id="daily-notes" rows="2" oninput="saveCurrentDailyEntry()" placeholder="Contoh: Semua sistem LEV dan dust collector beroperasi lancar. Tiada pembakaran terbuka." class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 outline-none"></textarea>
+        </div>
+
+        <!-- Save Confirmation Bar -->
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+          <span id="daily-save-status" class="text-xs font-medium text-emerald-700 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Disimpan secara automatik dalam peranti
+          </span>
+          <button onclick="switchTab('report')" class="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1">
+            <span>Semak Laporan 2 Minggu</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Rekod Hari Bekerja Dalam Tempoh Pelaporan -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Rekod Hari Bekerja (Tempoh Laporan Semasa)</h3>
+            <p class="text-xs text-slate-500">Klik mana-mana tarikh di bawah untuk kemas kini atau semak status harian.</p>
+          </div>
+          <div class="flex items-center gap-2 text-[11px] font-semibold">
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">● Semua OK</span>
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-rose-50 text-rose-700 border border-rose-200">● Ada Isu</span>
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200">● Belum Tanda</span>
+          </div>
+        </div>
+
+        <div id="daily-calendar-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2.5 pt-1">
+          <!-- Rendered dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Pemeriksaan / Penyelenggaraan Berkala (Mingguan) -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-lg">Lampiran Rekod Berkala</span>
+            <h3 class="text-base font-bold text-slate-900 mt-1">Pemeriksaan / Penyelenggaraan Berkala (Mingguan)</h3>
+            <p class="text-xs text-slate-500">Mengikut format Rekod Pemeriksaan Berkala SCK Wooden Industries Sdn Bhd.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="weekly-select" class="text-xs font-semibold text-slate-600">Pilih Minggu:</label>
+            <select id="weekly-select" onchange="renderWeeklyMaintenance()" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-emerald-600">
+              <option value="Minggu 1">Minggu 1 (01 - 07 hb)</option>
+              <option value="Minggu 2">Minggu 2 (08 - 15 hb)</option>
+              <option value="Minggu 3">Minggu 3 (16 - 22 hb)</option>
+              <option value="Minggu 4">Minggu 4 (23 - 28 hb)</option>
+              <option value="Minggu 5">Minggu 5 (29 - 31 hb)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="weekly-items-container" class="space-y-2.5">
+          <!-- Rendered dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: LAPORAN RASMI JAS (LAMPIRAN A - SETIAP 2 MINGGU)               -->
+    <!-- ===================================================================== -->
+    <section id="section-report" class="hidden space-y-5">
+      <!-- Action Toolbar -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">Borang Rasmi Lampiran A (Setiap 2 Minggu)</h2>
+          <p class="text-xs text-slate-500">Diselaraskan secara automatik dengan rekod checklist harian anda.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="printOfficialReport()" class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            <span>Simpan PDF / Cetak Rasmi</span>
+          </button>
+          <button onclick="switchTab('email')" class="flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition">
+            <span>Terus Ke E-mel JAS</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tempoh Pelaporan 2 Minggu Selector -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Pilih Tempoh Pelaporan (Setiap 2 Minggu)</h3>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="setBiWeeklyPreset('first')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100">
+              1hb – 15hb (Separuh Pertama)
+            </button>
+            <button onclick="setBiWeeklyPreset('second')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100">
+              16hb – Akhir Bulan (Separuh Kedua)
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Dari Tarikh</label>
+            <input type="date" id="report-start-date" onchange="updateReportDates()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Hingga Tarikh</label>
+            <input type="date" id="report-end-date" onchange="updateReportDates()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Tarikh Pengesahan Laporan</label>
+            <input type="date" id="report-sign-date" onchange="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-900" />
+          </div>
+        </div>
+      </div>
+
+      <!-- BAHAGIAN A: MAKLUMAT PREMIS -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <div class="border-b border-slate-100 pb-2.5">
+          <h3 class="text-sm font-extrabold text-emerald-900 uppercase">A. Maklumat Premis (Tetapan SCK Wooden Industries)</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-sm">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Nama Premis</label>
+            <input type="text" id="cfg-premise-name" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">No. Fail JAS</label>
+            <input type="text" id="cfg-jas-file" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Alamat Premis</label>
+            <input type="text" id="cfg-premise-address" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Jenis Industri</label>
+            <input type="text" id="cfg-industry-type" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Pegawai Bertanggungjawab</label>
+            <input type="text" id="cfg-officer-name" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Jawatan</label>
+            <input type="text" id="cfg-officer-role" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">No. Telefon</label>
+            <input type="text" id="cfg-officer-phone" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">E-mel Pegawai</label>
+            <input type="email" id="cfg-officer-email" oninput="saveProfileSettings()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold text-slate-900" />
+          </div>
+        </div>
+      </div>
+
+      <!-- BAHAGIAN B: STATUS PELAKSANAAN LANGKAH KAWALAN PENCEMARAN UDARA -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+          <h3 class="text-sm font-extrabold text-emerald-900 uppercase">B. Status Pelaksanaan Langkah Kawalan Pencemaran Udara</h3>
+          <button onclick="syncLampiranBFromDaily()" class="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200">
+            Segerak Dari Harian
+          </button>
+        </div>
+
+        <div id="lampiran-b-container" class="space-y-3">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- BAHAGIAN C, D & E -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <h3 class="text-sm font-extrabold text-emerald-900 uppercase border-b border-slate-100 pb-2.5">C, D & E. Pemantauan, Kejadian Luar Biasa & Rumusan</h3>
+
+        <div class="overflow-x-auto">
+          <table class="official-table text-xs sm:text-sm">
+            <thead class="bg-slate-100 text-slate-800">
+              <tr>
+                <th class="text-left">Perkara</th>
+                <th class="text-left">Kekerapan</th>
+                <th class="text-left">Status</th>
+                <th class="text-left">Catatan</th>
+              </tr>
+            </thead>
+            <tbody id="lampiran-c-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">D. Kejadian Pencemaran atau Pelepasan Luar Biasa (Jika Ada)</label>
+          <textarea id="report-incident-summary" rows="2" oninput="saveReportTextFields()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm text-slate-800"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">E. Rumusan Tindakan Pembetulan dan Penambahbaikan</label>
+          <textarea id="report-improvement-summary" rows="2" oninput="saveReportTextFields()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm text-slate-800"></textarea>
+        </div>
+
+        <!-- Digital Signature / Cop Pengesahan -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-700 uppercase">F. Tandatangan Digital & Cop Premis</span>
+            <button onclick="clearSignaturePad()" class="text-xs font-semibold text-rose-600 hover:underline">Padam Tandatangan</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl overflow-hidden relative">
+              <canvas id="signature-canvas" class="w-full h-28 touch-none cursor-crosshair block"></canvas>
+              <span class="absolute bottom-1.5 right-2.5 text-[10px] text-slate-400 pointer-events-none">Tandatangan di sini</span>
+            </div>
+            <div class="border-2 border-blue-900/80 rounded-xl p-3 text-center text-blue-900 bg-blue-50/40 select-none">
+              <p class="text-xs font-extrabold tracking-wide uppercase">SCK WOODEN INDUSTRIES SDN. BHD.</p>
+              <p class="text-[11px] font-bold">(0528956-D)</p>
+              <p class="text-[10px] mt-1 leading-tight">Batu 27, Jalan Kemaman, Kg. Cherating,<br/>26080 Kuantan, Pahang Darul Makmur.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: HANTAR TERUS KE E-MEL JAS GEBENG (SEKALI AYAT SWASTA)           -->
+    <!-- ===================================================================== -->
+    <section id="section-email" class="hidden space-y-5">
+      <!-- Recipient Card -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-4">
+        <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3.5">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg">Penghantaran Rasmi E-mel</span>
+            <h2 class="text-lg font-bold text-slate-900 mt-1">Hantar Laporan Terus Ke JAS Cawangan Gebeng</h2>
+            <p class="text-xs text-slate-500">Draf e-mel rasmi korporat swasta dijana secara automatik mengikut arahan surat JAS bertarikh 26 Ogos 2026.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-xs">
+          <div>
+            <span class="text-slate-500 font-semibold block">Kepada (E-mel Rasmi JAS Gebeng):</span>
+            <div class="flex items-center gap-2 mt-1">
+              <input type="text" id="jas-to-email" value="gebeng@doe.gov.my" class="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 font-bold text-emerald-900 text-sm w-full" />
+            </div>
+          </div>
+          <div>
+            <span class="text-slate-500 font-semibold block">Salinan / CC (Admin Gebeng & Pegawai):</span>
+            <div class="flex items-center gap-2 mt-1">
+              <input type="text" id="jas-cc-email" value="admingebeng@doe.gov.my, nordinblog@gmail.com" class="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 font-semibold text-slate-800 text-sm w-full" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject Line -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tajuk E-mel (Subject)</label>
+          <input type="text" id="email-subject-input" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 outline-none" />
+        </div>
+
+        <!-- Ayat Swasta Corporate Email Body -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">Ayat E-mel Rasmi (Format Korporat Swasta)</label>
+            <button onclick="regenerateEmailDraft()" class="text-xs font-semibold text-emerald-700 hover:underline">Jana Semula Ayat</button>
+          </div>
+          <textarea id="email-body-input" rows="15" class="w-full rounded-xl border border-slate-300 bg-slate-50/60 px-4 py-3 text-sm text-slate-800 leading-relaxed font-normal focus:ring-2 focus:ring-emerald-600 focus:bg-white outline-none"></textarea>
+        </div>
+
+        <!-- Step-by-step Attachment Reminder -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 flex items-start gap-3">
+          <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div class="text-xs text-amber-900 space-y-1">
+            <p class="font-bold">Langkah Mudah Hantar Bersama Lampiran PDF:</p>
+            <p>1. Tekan butang <strong>"Langkah 1: Simpan PDF Laporan"</strong> di bawah (pilih <em>Save as PDF</em> pada telefon/komputer).</p>
+            <p>2. Tekan <strong>"Langkah 2: Buka E-mel & Hantar Ke JAS"</strong> — alamat <code class="font-bold">gebeng@doe.gov.my</code>, tajuk, dan ayat swasta akan terisi automatik, kemudian lampirkan PDF tadi dan tekan <em>Send</em>.</p>
+          </div>
+        </div>
+
+        <!-- Primary Action Buttons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <button onclick="printOfficialReport()" class="flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 active:scale-98 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Langkah 1: Simpan PDF Laporan</span>
+          </button>
+
+          <button onclick="sendDirectEmail()" class="flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 active:scale-98 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-md transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+            <span>Langkah 2: Buka E-mel & Hantar Ke JAS</span>
+          </button>
+        </div>
+
+        <!-- Secondary Utilities: Gmail Web & Copy -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+          <button onclick="openGmailWeb()" class="flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs py-2.5 px-3 rounded-xl border border-slate-300 transition">
+            <span>Buka via Gmail Web</span>
+          </button>
+          <button onclick="copyEmailDraft()" class="flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs py-2.5 px-3 rounded-xl border border-slate-300 transition">
+            <span>Salin Tajuk & Ayat E-mel</span>
+          </button>
+          <button onclick="markReportSubmitted()" class="flex items-center justify-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs py-2.5 px-3 rounded-xl border border-emerald-200 transition">
+            <span>✓ Tandakan Sudah Dihantar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submission Log History -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 space-y-3">
+        <h3 class="text-sm font-bold text-slate-900">Rekod Penghantaran Laporan 2 Minggu Ke JAS Gebeng</h3>
+        <div id="submission-history-list" class="space-y-2 text-xs">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== OFFICIAL PRINT VIEW (PRINT-ONLY) ==================== -->
+  <div id="official-print-container" class="print-only">
+    <!-- Populated dynamically right before window.print() -->
+  </div>
+
+  <!-- ==================== iOS ADD TO HOME SCREEN MODAL ==================== -->
+  <div id="ios-install-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5 relative animate-fade-in">
+      <button onclick="closeIosModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 font-bold">
+        ✕
+      </button>
+
+      <div class="flex flex-col items-center text-center space-y-3">
+        <div class="p-1.5 rounded-[26px] bg-gradient-to-br from-emerald-500 to-teal-700 shadow-xl">
+          <img id="modal-ios-icon-preview" src="" alt="Ikon Aplikasi iOS" class="w-20 h-20 rounded-[22px] block" />
+        </div>
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">Aplikasi Web iOS (PWA)</span>
+          <h3 class="text-lg font-extrabold text-slate-900 mt-1">Pasang Logo di Skrin Utama iPhone</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Akses terus seperti aplikasi rasmi tanpa perlu buka pelayar setiap hari.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-3 text-xs text-slate-700">
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center shrink-0">1</span>
+          <p>Buka laman web ini menggunakan pelayar <strong>Safari</strong> di iPhone atau iPad anda.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center shrink-0">2</span>
+          <p>Tekan ikon <strong>Share</strong> (kotak dengan anak panah ke atas) di bahagian bawah skrin Safari.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center shrink-0">3</span>
+          <p>Tatal ke bawah dan pilih <strong>"Add to Home Screen"</strong> (Tambah ke Skrin Utama), kemudian tekan <strong>Add</strong>.</p>
+        </div>
+      </div>
+
+      <button onclick="closeIosModal()" class="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow transition">
+        Faham, Tutup Panduan
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="toast-box" class="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden items-center gap-2 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl border border-slate-700">
+    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+    <span id="toast-message">Berjaya disimpan!</span>
+  </div>
+
+  <!-- ==================== APPLICATION JAVASCRIPT ==================== -->
+  <script>
+    // =========================================================================
+    // 1. CONSTANTS & OFFICIAL SCHEMA (MATCHING JAS DOCUMENTS)
+    // =========================================================================
+    const STORAGE_KEY = 'sck_jas_elapor_v1';
+
+    const DAILY_CHECKLIST_ITEMS = [
+      { id: 'lev', label: 'Sistem Kawalan Habuk / LEV', desc: 'Sistem penyedut habuk (Local Exhaust Ventilation) beroperasi lancar' },
+      { id: 'dust_collector', label: 'Dust Collector Berfungsi', desc: 'Blower, ducting & bag filter berfungsi pada tahap optimum' },
+      { id: 'emission', label: 'Habuk / Pelepasan Terkawal', desc: 'Tiada pelepasan habuk/asap berlebihan di kawasan kilang' },
+      { id: 'storage', label: 'Kawasan Simpanan Bahan & Buangan', desc: 'Longgokan habuk kayu, bahan mentah & buangan ditutup/dikawal' },
+      { id: 'road', label: 'Laluan Kenderaan & Housekeeping', desc: 'Laluan kenderaan dibersihkan/disiram untuk elak fugitive dust' },
+      { id: 'open_burning', label: 'Tiada Pembakaran Terbuka', desc: 'Disahkan tiada sebarang aktiviti pembakaran terbuka di premis' }
+    ];
+
+    const WEEKLY_MAINTENANCE_ITEMS = [
+      'Sistem kawalan pencemaran udara / LEV',
+      'Dust collector, blower & ducting',
+      'Keadaan filter / dust bag',
+      'Kawasan operasi & pelepasan habuk',
+      'Kawasan simpanan bahan / buangan',
+      'Laluan kenderaan & housekeeping'
+    ];
+
+    const LAMPIRAN_B_DEFAULT = [
+      {
+        bil: 1,
+        tindakan: 'Sistem kawalan pencemaran udara beroperasi dengan baik',
+        perincian: 'Sistem LEV dan dust collector beroperasi dengan baik setiap hari bekerja.',
+        status: 'Ya'
+      },
+      {
+        bil: 2,
+        tindakan: 'Aktiviti penyelenggaraan sistem kawalan pencemaran telah dilaksanakan',
+        perincian: 'Pemeriksaan dan penyelenggaraan berkala mingguan dilaksanakan mengikut jadual.',
+        status: 'Ya'
+      },
+      {
+        bil: 3,
+        tindakan: 'Langkah-langkah kawalan pelepasan habuk telah dilaksanakan',
+        perincian: 'Kawalan pelepasan habuk di mesin pemprosesan kayu dan kawasan pemunggahan dilaksanakan.',
+        status: 'Ya'
+      },
+      {
+        bil: 4,
+        tindakan: 'Kawasan penyimpanan bahan mentah dan bahan buangan dikawal dengan sewajarnya',
+        perincian: 'Penyimpanan bahan mentah, habuk kayu dan buangan terjadual dikawal dalam kawasan tertutup.',
+        status: 'Ya'
+      },
+      {
+        bil: 5,
+        tindakan: 'Laluan kenderaan diselenggara bagi mengurangkan pelepasan habuk',
+        perincian: 'Laluan kenderaan dalam premis dipantau, disapu dan dibersihkan secara berkala.',
+        status: 'Ya'
+      },
+      {
+        bil: 6,
+        tindakan: 'Tiada aktiviti pembakaran terbuka dijalankan di kawasan premis',
+        perincian: 'Tiada sebarang pembakaran terbuka dijalankan di dalam kawasan premis.',
+        status: 'Ya'
+      },
+      {
+        bil: 7,
+        tindakan: 'Aktiviti pemantauan pencemaran udara telah dipertingkatkan',
+        perincian: 'Pemantauan harian pencemaran udara dan kawalan habuk direkodkan setiap hari bekerja.',
+        status: 'Ya'
+      }
+    ];
+
+    const LAMPIRAN_C_DEFAULT = [
+      { perkara: 'Pemeriksaan sistem kawalan pencemaran', kekerapan: 'Harian', status: 'Dilaksanakan', catatan: 'Checklist Harian' },
+      { perkara: 'Penyelenggaraan peralatan', kekerapan: 'Berkala', status: 'Dilaksanakan', catatan: 'Rekod penyelenggaraan' },
+      { perkara: 'Pemantauan pelepasan habuk', kekerapan: 'Harian', status: 'Dilaksanakan', catatan: 'Pemeriksaan kawasan' },
+      { perkara: 'Pemeriksaan kawasan operasi / laluan pergerakan kenderaan', kekerapan: 'Harian', status: 'Dilaksanakan', catatan: 'Housekeeping' }
+    ];
+
+    // Default State
+    function getDefaultState() {
+      const todayStr = getTodayISO();
+      const { start, end } = getBiWeeklyRangeForDate(todayStr);
+      return {
+        profile: {
+          premiseName: 'SCK Wooden Industries Sdn Bhd',
+          premiseAddress: 'Batu 27, Jalan Kemaman, Kg. Cherating, 26080 KUANTAN',
+          jasFileNo: 'JAS.CGB.600-3/4/44',
+          industryType: 'Kilang Kayu',
+          officerName: 'MOHAMAD NORDIN BIN MOHAMMED LOT',
+          officerRole: 'SHE OFFICER',
+          officerPhone: '0179396605',
+          officerEmail: 'nordinblog@gmail.com'
+        },
+        reportPeriod: {
+          startDate: start,
+          endDate: end,
+          signDate: todayStr
+        },
+        dailyLogs: {},
+        weeklyLogs: {},
+        lampiranB: JSON.parse(JSON.stringify(LAMPIRAN_B_DEFAULT)),
+        lampiranC: JSON.parse(JSON.stringify(LAMPIRAN_C_DEFAULT)),
+        incidentSummary: 'Tiada kejadian pencemaran atau pelepasan luar biasa direkodkan sepanjang tempoh pelaporan.',
+        improvementSummary: 'Pemantauan harian setiap hari bekerja serta penyelenggaraan berkala sistem LEV dan dust collector diteruskan secara konsisten bagi kesiapsiagaan cuaca panas dan kering.',
+        signatureDataUrl: '',
+        submissions: []
+      };
+    }
+
+    let appState = loadState();
+
+    // =========================================================================
+    // 2. DYNAMIC iOS APP ICON & PWA MANIFEST GENERATOR
+    // =========================================================================
+    function generateIosAppIcon() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      // Rich Forest Emerald Gradient Background
+      const bgGrad = ctx.createLinearGradient(0, 0, 512, 512);
+      bgGrad.addColorStop(0, '#065f46');
+      bgGrad.addColorStop(0.55, '#047857');
+      bgGrad.addColorStop(1, '#022c22');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 512, 512);
+
+      // Subtle decorative ring
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.arc(256, 232, 165, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Shield Emblem
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(256, 78);
+      ctx.lineTo(386, 128);
+      ctx.lineTo(386, 245);
+      ctx.quadraticCurveTo(386, 342, 256, 392);
+      ctx.quadraticCurveTo(126, 342, 126, 245);
+      ctx.lineTo(126, 128);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.96)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
+      ctx.shadowBlur = 24;
+      ctx.shadowOffsetY = 10;
+      ctx.fill();
+      ctx.restore();
+
+      // Stylized Eco Leaf inside Shield
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(256, 126);
+      ctx.bezierCurveTo(332, 152, 342, 245, 256, 315);
+      ctx.bezierCurveTo(170, 245, 180, 152, 256, 126);
+      ctx.fillStyle = '#059669';
+      ctx.fill();
+
+      // Leaf Vein + Checkmark
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(222, 226);
+      ctx.lineTo(248, 252);
+      ctx.lineTo(298, 194);
+      ctx.stroke();
+      ctx.restore();
+
+      // Bottom Badge Text: JAS • SCK
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 44px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('JAS • SCK', 256, 456);
+
+      const dataUrl = canvas.toDataURL('image/png');
+
+      // Apply to Apple Touch Icon, Favicon, Header & Modal
+      document.getElementById('apple-touch-icon-link').href = dataUrl;
+      document.getElementById('favicon-link').href = dataUrl;
+      document.getElementById('header-app-logo').src = dataUrl;
+      document.getElementById('modal-ios-icon-preview').src = dataUrl;
+
+      // Dynamic Web Manifest
+      const manifest = {
+        name: 'JAS E-Lapor | SCK Wooden Industries',
+        short_name: 'JAS E-Lapor SCK',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#022c22',
+        theme_color: '#064e3b',
+        icons: [
+          { src: dataUrl, sizes: '512x512', type: 'image/png' },
+          { src: dataUrl, sizes: '180x180', type: 'image/png' }
+        ]
+      };
+      const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+      document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
+    }
+
+    // =========================================================================
+    // 3. DATE & STORAGE UTILITIES
+    // =========================================================================
+    function getTodayISO() {
+      const now = new Date();
+      const offset = now.getTimezoneOffset() * 60000;
+      return new Date(now - offset).toISOString().split('T')[0];
+    }
+
+    function formatDateMY(isoStr) {
+      if (!isoStr) return '-';
+      const parts = isoStr.split('-');
+      if (parts.length !== 3) return isoStr;
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function getBiWeeklyRangeForDate(isoStr) {
+      const [y, m, d] = isoStr.split('-').map(Number);
+      if (d <= 15) {
+        return {
+          start: `${y}-${String(m).padStart(2, '0')}-01`,
+          end: `${y}-${String(m).padStart(2, '0')}-15`
+        };
+      } else {
+        const lastDay = new Date(y, m, 0).getDate();
+        return {
+          start: `${y}-${String(m).padStart(2, '0')}-16`,
+          end: `${y}-${String(m).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`
+        };
+      }
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return getDefaultState();
+        const parsed = JSON.parse(raw);
+        return { ...getDefaultState(), ...parsed };
+      } catch (e) {
+        return getDefaultState();
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        updateBannerStats();
+      } catch (e) {
+        console.error('Gagal menyimpan data:', e);
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-box');
+      document.getElementById('toast-message').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 2800);
+    }
+
+    // =========================================================================
+    // 4. TAB NAVIGATION & MODAL HANDLERS
+    // =========================================================================
+    function switchTab(tabName) {
+      ['daily', 'report', 'email'].forEach(t => {
+        const sec = document.getElementById(`section-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tabName) {
+          sec.classList.remove('hidden');
+          btn.classList.add('bg-white', 'text-emerald-900', 'shadow');
+          btn.classList.remove('text-emerald-100', 'hover:bg-white/10');
+        } else {
+          sec.classList.add('hidden');
+          btn.classList.remove('bg-white', 'text-emerald-900', 'shadow');
+          btn.classList.add('text-emerald-100', 'hover:bg-white/10');
+        }
+      });
+
+      if (tabName === 'report') {
+        renderReportTab();
+      } else if (tabName === 'email') {
+        regenerateEmailDraft();
+        renderSubmissionHistory();
+      }
+    }
+
+    function openIosModal() {
+      const m = document.getElementById('ios-install-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeIosModal() {
+      const m = document.getElementById('ios-install-modal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    // =========================================================================
+    // 5. TAB 1: DAILY CHECKLIST LOGIC (OKAY / TAK OKAY)
+    // =========================================================================
+    function getOrCreateDailyEntry(dateStr) {
+      if (!appState.dailyLogs[dateStr]) {
+        const dayOfWeek = new Date(dateStr + 'T00:00:00').getDay();
+        appState.dailyLogs[dateStr] = {
+          dayType: dayOfWeek === 0 ? 'off' : 'working',
+          items: {},
+          notes: ''
+        };
+      }
+      return appState.dailyLogs[dateStr];
+    }
+
+    function onDailyDateChange() {
+      renderDailyForm();
+      renderDailyCalendarGrid();
+    }
+
+    function setDayType(type) {
+      const dateStr = document.getElementById('daily-date-picker').value;
+      const entry = getOrCreateDailyEntry(dateStr);
+      entry.dayType = type;
+      saveState();
+      renderDailyForm();
+      renderDailyCalendarGrid();
+    }
+
+    function setDailyItemStatus(itemId, status) {
+      const dateStr = document.getElementById('daily-date-picker').value;
+      const entry = getOrCreateDailyEntry(dateStr);
+      entry.dayType = 'working';
+      entry.items[itemId] = status;
+      saveState();
+      renderDailyForm();
+      renderDailyCalendarGrid();
+    }
+
+    function markAllDailyOk() {
+      const dateStr = document.getElementById('daily-date-picker').value;
+      const entry = getOrCreateDailyEntry(dateStr);
+      entry.dayType = 'working';
+      DAILY_CHECKLIST_ITEMS.forEach(item => {
+        entry.items[item.id] = 'Baik';
+      });
+      if (!entry.notes) {
+        entry.notes = 'Semua sistem LEV & dust collector beroperasi baik. Tiada pembakaran terbuka.';
+      }
+      saveState();
+      renderDailyForm();
+      renderDailyCalendarGrid();
+      showToast(`Semua item tarikh ${formatDateMY(dateStr)} ditanda OK!`);
+    }
+
+    function saveCurrentDailyEntry() {
+      const dateStr = document.getElementById('daily-date-picker').value;
+      const entry = getOrCreateDailyEntry(dateStr);
+      entry.notes = document.getElementById('daily-notes').value;
+      saveState();
+    }
+
+    function renderDailyForm() {
+      const dateStr = document.getElementById('daily-date-picker').value;
+      const entry = getOrCreateDailyEntry(dateStr);
+
+      const btnWork = document.getElementById('btn-status-working');
+      const btnOff = document.getElementById('btn-status-off');
+      const offNotice = document.getElementById('off-day-notice');
+      const itemsContainer = document.getElementById('daily-items-container');
+      const notesWrapper = document.getElementById('daily-notes-wrapper');
+      const markAllBtn = document.getElementById('btn-mark-all-ok');
+
+      if (entry.dayType === 'off') {
+        btnOff.className = 'px-3.5 py-2 rounded-xl text-xs font-bold transition bg-slate-800 text-white shadow-sm';
+        btnWork.className = 'px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-100';
+        offNotice.classList.remove('hidden');
+        itemsContainer.classList.add('hidden');
+        notesWrapper.classList.add('hidden');
+        markAllBtn.classList.add('opacity-50', 'pointer-events-none');
+        return;
+      }
+
+      btnWork.className = 'px-3.5 py-2 rounded-xl text-xs font-bold transition bg-emerald-700 text-white shadow-sm';
+      btnOff.className = 'px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-100';
+      offNotice.classList.add('hidden');
+      itemsContainer.classList.remove('hidden');
+      notesWrapper.classList.remove('hidden');
+      markAllBtn.classList.remove('opacity-50', 'pointer-events-none');
+
+      itemsContainer.innerHTML = DAILY_CHECKLIST_ITEMS.map((item, idx) => {
+        const val = entry.items[item.id] || '';
+        const isOk = val === 'Baik';
+        const isNotOk = val === 'Tidak';
+
+        return `
+          <div class="p-3.5 rounded-2xl border ${isNotOk ? 'border-rose-300 bg-rose-50/40' : isOk ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200 bg-white'} flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition">
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-bold flex items-center justify-center">${idx + 1}</span>
+                <p class="text-sm font-bold text-slate-900">${item.label}</p>
+              </div>
+              <p class="text-xs text-slate-500 pl-7">${item.desc}</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 sm:w-52 shrink-0 pl-7 sm:pl-0">
+              <button type="button" onclick="setDailyItemStatus('${item.id}', 'Baik')" class="py-2.5 px-3 rounded-xl text-xs font-extrabold border transition flex items-center justify-center gap-1.5 ${isOk ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-white text-slate-600 border-slate-300 hover:bg-emerald-50'}">
+                <span>✓</span>
+                <span>OK (Baik)</span>
+              </button>
+              <button type="button" onclick="setDailyItemStatus('${item.id}', 'Tidak')" class="py-2.5 px-3 rounded-xl text-xs font-extrabold border transition flex items-center justify-center gap-1.5 ${isNotOk ? 'bg-rose-600 text-white border-rose-600 shadow-sm' : 'bg-white text-slate-600 border-slate-300 hover:bg-rose-50'}">
+                <span>✕</span>
+                <span>Tak Okay</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('daily-notes').value = entry.notes || '';
+    }
+
+    function getDatesInRange(startStr, endStr) {
+      const dates = [];
+      let curr = new Date(startStr + 'T00:00:00');
+      const end = new Date(endStr + 'T00:00:00');
+      let safety = 0;
+      while (curr <= end && safety < 62) {
+        const y = curr.getFullYear();
+        const m = String(curr.getMonth() + 1).padStart(2, '0');
+        const d = String(curr.getDate()).padStart(2, '0');
+        dates.push(`${y}-${m}-${d}`);
+        curr.setDate(curr.getDate() + 1);
+        safety++;
+      }
+      return dates;
+    }
+
+    function renderDailyCalendarGrid() {
+      const grid = document.getElementById('daily-calendar-grid');
+      const selectedDate = document.getElementById('daily-date-picker').value;
+      const dates = getDatesInRange(appState.reportPeriod.startDate, appState.reportPeriod.endDate);
+      const dayNames = ['Ahd', 'Isn', 'Sel', 'Rab', 'Kha', 'Jum', 'Sab'];
+
+      grid.innerHTML = dates.map(dStr => {
+        const dt = new Date(dStr + 'T00:00:00');
+        const dayLabel = dayNames[dt.getDay()];
+        const log = appState.dailyLogs[dStr];
+        const isSelected = dStr === selectedDate;
+
+        let badgeClass = 'bg-slate-50 border-slate-200 text-slate-600';
+        let statusText = 'Belum Tanda';
+
+        if (log) {
+          if (log.dayType === 'off') {
+            badgeClass = 'bg-slate-100 border-slate-200 text-slate-400';
+            statusText = 'Cuti / Tutup';
+          } else {
+            const vals = Object.values(log.items || {});
+            if (vals.includes('Tidak')) {
+              badgeClass = 'bg-rose-50 border-rose-300 text-rose-700';
+              statusText = 'Ada Isu (Tak OK)';
+            } else if (vals.length === DAILY_CHECKLIST_ITEMS.length) {
+              badgeClass = 'bg-emerald-50 border-emerald-300 text-emerald-800';
+              statusText = 'Semua OK ✓';
+            } else if (vals.length > 0) {
+              badgeClass = 'bg-amber-50 border-amber-300 text-amber-800';
+              statusText = `${vals.length}/6 Ditanda`;
+            }
+          }
+        }
+
+        return `
+          <button type="button" onclick="selectCalendarDate('${dStr}')" class="p-2.5 rounded-xl border text-left transition ${badgeClass} ${isSelected ? 'ring-2 ring-emerald-700 shadow-sm' : 'hover:opacity-90'}">
+            <div class="flex items-center justify-between text-[11px] font-bold">
+              <span>${formatDateMY(dStr).slice(0, 5)}</span>
+              <span class="opacity-75">${dayLabel}</span>
+            </div>
+            <p class="text-[11px] font-semibold mt-1 truncate">${statusText}</p>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectCalendarDate(dStr) {
+      document.getElementById('daily-date-picker').value = dStr;
+      renderDailyForm();
+      renderDailyCalendarGrid();
+    }
+
+    // Weekly Maintenance
+    function renderWeeklyMaintenance() {
+      const weekKey = document.getElementById('weekly-select').value;
+      if (!appState.weeklyLogs[weekKey]) {
+        appState.weeklyLogs[weekKey] = WEEKLY_MAINTENANCE_ITEMS.map(item => ({
+          perkara: item,
+          status: 'Baik',
+          catatan: 'Pemeriksaan berkala dilaksanakan - keadaan baik'
+        }));
+      }
+
+      const container = document.getElementById('weekly-items-container');
+      container.innerHTML = appState.weeklyLogs[weekKey].map((row, i) => `
+        <div class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div class="flex-1">
+            <p class="text-xs font-bold text-slate-800">${i + 1}. ${row.perkara}</p>
+            <input type="text" value="${row.catatan}" onchange="updateWeeklyNote('${weekKey}', ${i}, this.value)" class="mt-1 w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-xs text-slate-700" placeholder="Catatan tindakan..." />
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="updateWeeklyStatus('${weekKey}', ${i}, 'Baik')" class="px-3 py-1.5 rounded-lg text-xs font-bold border ${row.status === 'Baik' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-300'}">Baik</button>
+            <button type="button" onclick="updateWeeklyStatus('${weekKey}', ${i}, 'Tidak')" class="px-3 py-1.5 rounded-lg text-xs font-bold border ${row.status === 'Tidak' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-600 border-slate-300'}">Tidak</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateWeeklyStatus(weekKey, idx, status) {
+      appState.weeklyLogs[weekKey][idx].status = status;
+      saveState();
+      renderWeeklyMaintenance();
+    }
+
+    function updateWeeklyNote(weekKey, idx, val) {
+      appState.weeklyLogs[weekKey][idx].catatan = val;
+      saveState();
+    }
+
+    // =========================================================================
+    // 6. TAB 2: LAMPIRAN A BI-WEEKLY REPORT & SIGNATURE PAD
+    // =========================================================================
+    function setBiWeeklyPreset(half) {
+      const baseDate = document.getElementById('report-start-date').value || getTodayISO();
+      const [y, m] = baseDate.split('-').map(Number);
+      if (half === 'first') {
+        appState.reportPeriod.startDate = `${y}-${String(m).padStart(2, '0')}-01`;
+        appState.reportPeriod.endDate = `${y}-${String(m).padStart(2, '0')}-15`;
+      } else {
+        const lastDay = new Date(y, m, 0).getDate();
+        appState.reportPeriod.startDate = `${y}-${String(m).padStart(2, '0')}-16`;
+        appState.reportPeriod.endDate = `${y}-${String(m).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      }
+      document.getElementById('report-start-date').value = appState.reportPeriod.startDate;
+      document.getElementById('report-end-date').value = appState.reportPeriod.endDate;
+      saveState();
+      renderDailyCalendarGrid();
+      syncLampiranBFromDaily();
+      showToast('Tempoh pelaporan 2 minggu dikemas kini.');
+    }
+
+    function updateReportDates() {
+      appState.reportPeriod.startDate = document.getElementById('report-start-date').value;
+      appState.reportPeriod.endDate = document.getElementById('report-end-date').value;
+      saveState();
+      renderDailyCalendarGrid();
+      syncLampiranBFromDaily();
+    }
+
+    function saveProfileSettings() {
+      appState.profile.premiseName = document.getElementById('cfg-premise-name').value;
+      appState.profile.jasFileNo = document.getElementById('cfg-jas-file').value;
+      appState.profile.premiseAddress = document.getElementById('cfg-premise-address').value;
+      appState.profile.industryType = document.getElementById('cfg-industry-type').value;
+      appState.profile.officerName = document.getElementById('cfg-officer-name').value;
+      appState.profile.officerRole = document.getElementById('cfg-officer-role').value;
+      appState.profile.officerPhone = document.getElementById('cfg-officer-phone').value;
+      appState.profile.officerEmail = document.getElementById('cfg-officer-email').value;
+      appState.reportPeriod.signDate = document.getElementById('report-sign-date').value;
+      saveState();
+    }
+
+    function saveReportTextFields() {
+      appState.incidentSummary = document.getElementById('report-incident-summary').value;
+      appState.improvementSummary = document.getElementById('report-improvement-summary').value;
+      saveState();
+    }
+
+    function syncLampiranBFromDaily() {
+      const dates = getDatesInRange(appState.reportPeriod.startDate, appState.reportPeriod.endDate);
+      const issues = [];
+
+      dates.forEach(dStr => {
+        const log = appState.dailyLogs[dStr];
+        if (log && log.dayType === 'working') {
+          const badItems = DAILY_CHECKLIST_ITEMS.filter(it => log.items[it.id] === 'Tidak');
+          if (badItems.length > 0) {
+            issues.push(`${formatDateMY(dStr)}: ${badItems.map(b => b.label).join(', ')} (${log.notes || 'Tindakan pembetulan segera diambil'})`);
+          }
+        }
+      });
+
+      if (issues.length > 0) {
+        appState.incidentSummary = issues.join('\n');
+      } else {
+        appState.incidentSummary = 'Tiada kejadian pencemaran atau pelepasan luar biasa direkodkan sepanjang tempoh pelaporan.';
+      }
+
+      saveState();
+      renderReportTab();
+    }
+
+    function renderReportTab() {
+      // Populate inputs
+      document.getElementById('report-start-date').value = appState.reportPeriod.startDate;
+      document.getElementById('report-end-date').value = appState.reportPeriod.endDate;
+      document.getElementById('report-sign-date').value = appState.reportPeriod.signDate;
+
+      document.getElementById('cfg-premise-name').value = appState.profile.premiseName;
+      document.getElementById('cfg-jas-file').value = appState.profile.jasFileNo;
+      document.getElementById('cfg-premise-address').value = appState.profile.premiseAddress;
+      document.getElementById('cfg-industry-type').value = appState.profile.industryType;
+      document.getElementById('cfg-officer-name').value = appState.profile.officerName;
+      document.getElementById('cfg-officer-role').value = appState.profile.officerRole;
+      document.getElementById('cfg-officer-phone').value = appState.profile.officerPhone;
+      document.getElementById('cfg-officer-email').value = appState.profile.officerEmail;
+
+      document.getElementById('report-incident-summary').value = appState.incidentSummary;
+      document.getElementById('report-improvement-summary').value = appState.improvementSummary;
+
+      // Render Bahagian B
+      const bContainer = document.getElementById('lampiran-b-container');
+      bContainer.innerHTML = appState.lampiranB.map((item, idx) => `
+        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <p class="text-xs sm:text-sm font-bold text-slate-900">${item.bil}. ${item.tindakan}</p>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${['Ya', 'Tidak', 'Tidak Berkaitan'].map(opt => `
+                <button type="button" onclick="setLampiranBStatus(${idx}, '${opt}')" class="px-2.5 py-1 rounded-lg text-xs font-bold border ${item.status === opt ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-slate-600 border-slate-300'}">
+                  ${opt}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <input type="text" value="${item.perincian}" oninput="updateLampiranBDetail(${idx}, this.value)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-800" placeholder="Perincian tindakan yang diambil..." />
+        </div>
+      `).join('');
+
+      // Render Bahagian C
+      const cTbody = document.getElementById('lampiran-c-tbody');
+      cTbody.innerHTML = appState.lampiranC.map((row, idx) => `
+        <tr>
+          <td class="font-semibold text-slate-800">${row.perkara}</td>
+          <td>${row.kekerapan}</td>
+          <td><span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 font-bold text-xs">${row.status}</span></td>
+          <td>
+            <input type="text" value="${row.catatan}" oninput="updateLampiranCCatatan(${idx}, this.value)" class="w-full border border-slate-200 rounded px-2 py-1 text-xs" />
+          </td>
+        </tr>
+      `).join('');
+
+      initSignaturePad();
+    }
+
+    function setLampiranBStatus(idx, status) {
+      appState.lampiranB[idx].status = status;
+      saveState();
+      renderReportTab();
+    }
+
+    function updateLampiranBDetail(idx, val) {
+      appState.lampiranB[idx].perincian = val;
+      saveState();
+    }
+
+    function updateLampiranCCatatan(idx, val) {
+      appState.lampiranC[idx].catatan = val;
+      saveState();
+    }
+
+    // Digital Signature Canvas
+    function initSignaturePad() {
+      const canvas = document.getElementById('signature-canvas');
+      if (!canvas || canvas.dataset.initialized) return;
+      canvas.dataset.initialized = 'true';
+
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width || 320;
+      canvas.height = 112;
+      const ctx = canvas.getContext('2d');
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.2;
+      ctx.lineCap = 'round';
+
+      if (appState.signatureDataUrl) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, 0, 0);
+        img.src = appState.signatureDataUrl;
+      }
+
+      let drawing = false;
+      const getPos = (e) => {
+        const r = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (clientX - r.left) * (canvas.width / r.width),
+          y: (clientY - r.top) * (canvas.height / r.height)
+        };
+      };
+
+      const start = (e) => {
+        drawing = true;
+        const p = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+      };
+      const move = (e) => {
+        if (!drawing) return;
+        e.preventDefault();
+        const p = getPos(e);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      };
+      const end = () => {
+        if (!drawing) return;
+        drawing = false;
+        appState.signatureDataUrl = canvas.toDataURL('image/png');
+        saveState();
+      };
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', end);
+      canvas.addEventListener('touchstart', start, { passive: false });
+      canvas.addEventListener('touchmove', move, { passive: false });
+      canvas.addEventListener('touchend', end);
+    }
+
+    function clearSignaturePad() {
+      const canvas = document.getElementById('signature-canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      appState.signatureDataUrl = '';
+      saveState();
+    }
+
+    // =========================================================================
+    // 7. OFFICIAL PDF / PRINT RENDERER (LAMPIRAN A + DAILY CHECKLIST)
+    // =========================================================================
+    function printOfficialReport() {
+      const p = appState.profile;
+      const startStr = formatDateMY(appState.reportPeriod.startDate);
+      const endStr = formatDateMY(appState.reportPeriod.endDate);
+      const signStr = formatDateMY(appState.reportPeriod.signDate);
+      const dates = getDatesInRange(appState.reportPeriod.startDate, appState.reportPeriod.endDate);
+
+      const dailyRowsHtml = dates.map(dStr => {
+        const log = appState.dailyLogs[dStr];
+        const isOff = !log || log.dayType === 'off';
+        const cell = (id) => {
+          if (isOff) return '<td style="text-align:center;color:#666;">Cuti</td>';
+          const v = log.items[id];
+          if (v === 'Baik') return '<td style="text-align:center;">☑ Baik</td>';
+          if (v === 'Tidak') return '<td style="text-align:center;font-weight:bold;">☑ Tidak</td>';
+          return '<td style="text-align:center;">☐ Baik</td>';
+        };
+        return `
+          <tr>
+            <td style="white-space:nowrap;">${formatDateMY(dStr)}</td>
+            ${cell('lev')}
+            ${cell('dust_collector')}
+            ${cell('emission')}
+            ${cell('storage')}
+            ${cell('road')}
+            ${cell('open_burning')}
+            <td>${isOff ? 'Tidak Beroperasi' : (log.notes || '-')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      const printContainer = document.getElementById('official-print-container');
+      printContainer.innerHTML = `
+        <div style="font-family: Arial, sans-serif; color: #000; line-height: 1.35;">
+          <div style="text-align: right; font-weight: bold; font-size: 11pt;">LAMPIRAN A</div>
+          <div style="text-align: center; font-weight: bold; font-size: 11pt; margin: 6px 0 12px 0;">
+            LAPORAN<br/>
+            PELAKSANAAN LANGKAH-LANGKAH KAWALAN PENCEMARAN UDARA<br/>
+            SEBAGAI KESIAPSIAGAAN MENGHADAPI CUACA PANAS DAN KERING<br/>
+            SERTA FENOMENA EL-NINO
+          </div>
+
+          <p style="font-weight: bold; margin-bottom: 4px;">A. MAKLUMAT PREMIS</p>
+          <table class="official-table" style="font-size: 9.5pt; margin-bottom: 12px;">
+            <tr><td style="width: 34%; font-weight: bold;">Nama premis</td><td>${p.premiseName}</td></tr>
+            <tr><td style="font-weight: bold;">Alamat premis</td><td>${p.premiseAddress}</td></tr>
+            <tr><td style="font-weight: bold;">No Fail JAS</td><td>${p.jasFileNo}</td></tr>
+            <tr><td style="font-weight: bold;">Jenis industri</td><td>${p.industryType}</td></tr>
+            <tr><td style="font-weight: bold;">Tempoh pelaporan</td><td>Dari: <strong>${startStr}</strong> hingga <strong>${endStr}</strong></td></tr>
+            <tr><td style="font-weight: bold;">Pegawai bertanggungjawab</td><td>${p.officerName}</td></tr>
+            <tr><td style="font-weight: bold;">Jawatan</td><td>${p.officerRole}</td></tr>
+            <tr><td style="font-weight: bold;">No. telefon</td><td>${p.officerPhone}</td></tr>
+            <tr><td style="font-weight: bold;">E-mel</td><td>${p.officerEmail}</td></tr>
+          </table>
+
+          <p style="font-weight: bold; margin-bottom: 4px;">B. STATUS PELAKSANAAN LANGKAH KAWALAN PENCEMARAN UDARA</p>
+          <table class="official-table" style="font-size: 9pt; margin-bottom: 12px;">
+            <thead>
+              <tr style="background:#f1f5f9;">
+                <th style="width: 5%;">Bil.</th>
+                <th style="width: 33%;">Tindakan</th>
+                <th style="width: 38%;">Perincian Tindakan Yang Diambil</th>
+                <th style="width: 8%;">Ya</th>
+                <th style="width: 8%;">Tidak</th>
+                <th style="width: 8%;">T/B</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${appState.lampiranB.map(r => `
+                <tr>
+                  <td style="text-align:center;">${r.bil}.</td>
+                  <td>${r.tindakan}</td>
+                  <td>${r.perincian}</td>
+                  <td style="text-align:center; font-size:11pt;">${r.status === 'Ya' ? '☑' : '☐'}</td>
+                  <td style="text-align:center; font-size:11pt;">${r.status === 'Tidak' ? '☑' : '☐'}</td>
+                  <td style="text-align:center; font-size:11pt;">${r.status === 'Tidak Berkaitan' ? '☑' : '☐'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <p style="font-weight: bold; margin-bottom: 4px;">C. AKTIVITI PEMANTAUAN DAN PENYELENGGARAAN</p>
+          <table class="official-table" style="font-size: 9pt; margin-bottom: 12px;">
+            <thead>
+              <tr style="background:#f1f5f9;">
+                <th>PERKARA</th>
+                <th>KEKERAPAN</th>
+                <th>STATUS</th>
+                <th>CATATAN</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${appState.lampiranC.map(c => `
+                <tr>
+                  <td>${c.perkara}</td>
+                  <td>${c.kekerapan}</td>
+                  <td>${c.status}</td>
+                  <td>${c.catatan}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <p style="font-weight: bold; margin-bottom: 4px;">D. KEJADIAN PENCEMARAN ATAU PELEPASAN LUAR BIASA (JIKA ADA)</p>
+          <div style="border: 1px solid #000; padding: 6px 8px; font-size: 9pt; margin-bottom: 10px;">
+            ${appState.incidentSummary}
+          </div>
+
+          <p style="font-weight: bold; margin-bottom: 4px;">E. RUMUSAN TINDAKAN PEMBETULAN DAN PENAMBAHBAIKAN</p>
+          <div style="border: 1px solid #000; padding: 6px 8px; font-size: 9pt; margin-bottom: 12px;">
+            ${appState.improvementSummary}
+          </div>
+
+          <p style="font-weight: bold; margin-bottom: 4px;">F. PENGESAHAN OLEH PREMIS</p>
+          <p style="font-size: 9pt; margin-bottom: 8px;">Saya mengesahkan bahawa maklumat yang dikemukakan dalam laporan ini adalah benar dan tepat.</p>
+          <table style="width: 100%; font-size: 9.5pt;">
+            <tr>
+              <td style="width: 60%; vertical-align: top;">
+                <p>Nama : <strong>${p.officerName}</strong></p>
+                <p>Jawatan : <strong>${p.officerRole}</strong></p>
+                <p>Tandatangan : ${appState.signatureDataUrl ? `<br/><img src="${appState.signatureDataUrl}" style="height:45px;"/>` : '_______________________'}</p>
+                <p>Tarikh : <strong>${signStr}</strong></p>
+              </td>
+              <td style="width: 40%; vertical-align: middle; text-align: center;">
+                <div style="border: 2px solid #1e3a8a; color: #1e3a8a; padding: 8px; font-size: 8pt; font-weight: bold;">
+                  SCK WOODEN INDUSTRIES SDN. BHD.<br/>(0528956-D)<br/>
+                  Batu 27, Jalan Kemaman, Kg. Cherating,<br/>26080 Kuantan, Pahang.
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div style="font-size: 8pt; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 4px;">
+            <strong>NOTA:</strong> 1. Borang ini hendaklah dikemukakan kepada Jabatan Alam Sekitar Negeri Pahang Cawangan Gebeng setiap dua (2) minggu.
+          </div>
+
+          <!-- PAGE 2: CHECKLIST PEMANTAUAN HARIAN -->
+          <div class="print-page-break"></div>
+          <div style="text-align: center; font-weight: bold; font-size: 10.5pt; margin-bottom: 8px;">
+            CHECKLIST PEMANTAUAN PENCEMARAN UDARA & KAWALAN HABUK<br/>
+            <span style="font-size: 9pt; font-weight: normal;">${p.premiseName} (${p.jasFileNo}) | Tempoh: ${startStr} – ${endStr}</span>
+          </div>
+          <table class="official-table" style="font-size: 8pt;">
+            <thead>
+              <tr style="background:#f1f5f9;">
+                <th>Tarikh</th>
+                <th>Sistem Kawalan Habuk / LEV</th>
+                <th>Dust Collector Berfungsi</th>
+                <th>Habuk / Pelepasan</th>
+                <th>Kawasan Simpanan</th>
+                <th>Laluan Kenderaan</th>
+                <th>Tiada Pembakaran Terbuka</th>
+                <th>Catatan / Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${dailyRowsHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      window.print();
+    }
+
+    // =========================================================================
+    // 8. TAB 3: DIRECT EMAIL TO JAS GEBENG (AYAT SWASTA KORPORAT)
+    // =========================================================================
+    function getComplianceStatsForPeriod() {
+      const dates = getDatesInRange(appState.reportPeriod.startDate, appState.reportPeriod.endDate);
+      let workingDays = 0;
+      let okDays = 0;
+      let issueDays = 0;
+
+      dates.forEach(dStr => {
+        const log = appState.dailyLogs[dStr];
+        if (log && log.dayType === 'working') {
+          workingDays++;
+          const vals = Object.values(log.items || {});
+          if (vals.includes('Tidak')) {
+            issueDays++;
+          } else if (vals.length > 0) {
+            okDays++;
+          }
+        }
+      });
+
+      return { totalDays: dates.length, workingDays, okDays, issueDays };
+    }
+
+    function regenerateEmailDraft() {
+      const p = appState.profile;
+      const startStr = formatDateMY(appState.reportPeriod.startDate);
+      const endStr = formatDateMY(appState.reportPeriod.endDate);
+      const stats = getComplianceStatsForPeriod();
+
+      const subject = `LAPORAN KAWALAN PENCEMARAN UDARA (EL-NINO) – ${p.premiseName.toUpperCase()} (${p.jasFileNo}) [TEMPOH: ${startStr} - ${endStr}]`;
+
+      const body = `Assalamualaikum dan Salam Sejahtera,
+
+Kepada:
+Ketua Cawangan,
+Jabatan Alam Sekitar Negeri Pahang Cawangan Gebeng,
+Tingkat 1, Bangunan Kontena Nasional,
+Lot 126, Jalan Gebeng 2/3,
+Kawasan Perindustrian Gebeng,
+26080 Kuantan, Pahang Darul Makmur.
+
+Tuan/Puan,
+
+PENGEMUKAAN LAPORAN PELAKSANAAN LANGKAH-LANGKAH KAWALAN PENCEMARAN UDARA SEBAGAI KESIAPSIAGAAN MENGHADAPI CUACA PANAS DAN KERING SERTA FENOMENA EL-NINO (TEMPOH: ${startStr} HINGGA ${endStr})
+
+Dengan segala hormatnya merujuk kepada perkara di atas serta surat arahan pihak Jabatan bertarikh 26 Ogos 2026 (No. Rujukan: JAS.CGB.600-3/4/44 (21)).
+
+2. Sehubungan itu, pihak kami dari ${p.premiseName} (${p.jasFileNo}) dengan sukacitanya mengemukakan Laporan Berkala Setiap Dua (2) Minggu (Lampiran A) berserta Rekod Checklist Pemantauan Harian bagi tempoh ${startStr} hingga ${endStr} sebagaimana dilampirkan bersama e-mel ini.
+
+3. Untuk makluman pihak Tuan/Puan, ringkasan status pemantauan di premis kami sepanjang tempoh tersebut adalah seperti berikut:
+   • Jumlah Hari Bekerja Dipantau : ${stats.workingDays > 0 ? stats.workingDays + ' hari bekerja' : 'Dilaksanakan setiap hari bekerja'}
+   • Status Sistem LEV & Dust Collector : Beroperasi dengan baik dan diselenggara mengikut jadual
+   • Kawalan Habuk & Laluan Kenderaan : Terkawal serta pembersihan (housekeeping) dijalankan secara harian
+   • Aktiviti Pembakaran Terbuka : Disahkan TIADA sebarang pembakaran terbuka dijalankan di kawasan premis
+
+4. Pihak pengurusan ${p.premiseName} sentiasa komited dalam mematuhi Akta Kualiti Alam Sekeliling 1974 [Akta 127] dan memastikan operasi kilang tidak menjejaskan kualiti udara setempat. Sekiranya pihak Tuan/Puan memerlukan sebarang maklumat lanjut, sila hubungi pegawai kami di talian ${p.officerPhone}.
+
+Segala perhatian dan kerjasama daripada pihak Jabatan amatlah kami hargai dan dahului dengan ucapan ribuan terima kasih.
+
+Sekian, terima kasih.
+
+Yang benar,
+
+${p.officerName}
+${p.officerRole}
+${p.premiseName}
+No. Fail JAS : ${p.jasFileNo}
+Alamat : ${p.premiseAddress}
+No. Telefon : ${p.officerPhone}
+E-mel : ${p.officerEmail}`;
+
+      document.getElementById('email-subject-input').value = subject;
+      document.getElementById('email-body-input').value = body;
+    }
+
+    function sendDirectEmail() {
+      const to = encodeURIComponent(document.getElementById('jas-to-email').value.trim());
+      const cc = encodeURIComponent(document.getElementById('jas-cc-email').value.trim());
+      const subject = encodeURIComponent(document.getElementById('email-subject-input').value);
+      const body = encodeURIComponent(document.getElementById('email-body-input').value);
+
+      window.location.href = `mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
+      showToast('Membuka aplikasi E-mel anda... Jangan lupa lampirkan PDF Laporan!');
+    }
+
+    function openGmailWeb() {
+      const to = encodeURIComponent(document.getElementById('jas-to-email').value.trim());
+      const cc = encodeURIComponent(document.getElementById('jas-cc-email').value.trim());
+      const subject = encodeURIComponent(document.getElementById('email-subject-input').value);
+      const body = encodeURIComponent(document.getElementById('email-body-input').value);
+
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&su=${subject}&body=${body}`;
+      window.open(gmailUrl, '_blank');
+    }
+
+    function copyEmailDraft() {
+      const subject = document.getElementById('email-subject-input').value;
+      const body = document.getElementById('email-body-input').value;
+      const fullText = `Kepada: ${document.getElementById('jas-to-email').value}\nTajuk: ${subject}\n\n${body}`;
+
+      const tempArea = document.createElement('textarea');
+      tempArea.value = fullText;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempArea);
+
+      showToast('Tajuk & ayat e-mel rasmi berjaya disalin!');
+    }
+
+    function markReportSubmitted() {
+      const record = {
+        id: Date.now(),
+        period: `${formatDateMY(appState.reportPeriod.startDate)} – ${formatDateMY(appState.reportPeriod.endDate)}`,
+        submittedAt: new Date().toLocaleString('ms-MY'),
+        recipient: document.getElementById('jas-to-email').value
+      };
+      appState.submissions.unshift(record);
+      saveState();
+      renderSubmissionHistory();
+      showToast('Status penghantaran 2 minggu direkodkan!');
+    }
+
+    function renderSubmissionHistory() {
+      const list = document.getElementById('submission-history-list');
+      if (!appState.submissions || appState.submissions.length === 0) {
+        list.innerHTML = `<p class="text-slate-400 italic py-2">Belum ada rekod penghantaran disimpan. Tekan "Tandakan Sudah Dihantar" selepas e-mel dihantar.</p>`;
+        return;
+      }
+      list.innerHTML = appState.submissions.map(s => `
+        <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-center justify-between gap-2">
+          <div>
+            <p class="font-bold text-emerald-900">Tempoh Laporan: ${s.period}</p>
+            <p class="text-slate-600">Dihantar ke: ${s.recipient} • Pada: ${s.submittedAt}</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px] shrink-0">Selesai ✓</span>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 9. BANNER STATS & DEMO DATA HELPER
+    // =========================================================================
+    function updateBannerStats() {
+      const startStr = formatDateMY(appState.reportPeriod.startDate);
+      const endStr = formatDateMY(appState.reportPeriod.endDate);
+      document.getElementById('banner-cycle-text').textContent = `Tempoh Semasa: ${startStr} – ${endStr}`;
+
+      const stats = getComplianceStatsForPeriod();
+      document.getElementById('banner-logged-badge').innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        ${stats.workingDays} Hari Bekerja Direkod (${stats.okDays} OK)
+      `;
+    }
+
+    function loadDemoData() {
+      const dates = getDatesInRange(appState.reportPeriod.startDate, appState.reportPeriod.endDate);
+      dates.forEach(dStr => {
+        const day = new Date(dStr + 'T00:00:00').getDay();
+        if (day === 0) {
+          appState.dailyLogs[dStr] = { dayType: 'off', items: {}, notes: '' };
+        } else {
+          const items = {};
+          DAILY_CHECKLIST_ITEMS.forEach(it => items[it.id] = 'Baik');
+          appState.dailyLogs[dStr] = {
+            dayType: 'working',
+            items,
+            notes: 'Sistem LEV & dust collector beroperasi lancar. Housekeeping dan kawalan habuk baik.'
+          };
+        }
+      });
+      saveState();
+      renderDailyForm();
+      renderDailyCalendarGrid();
+      syncLampiranBFromDaily();
+      showToast('Contoh data hari bekerja untuk tempoh 2 minggu berjaya diisi!');
+    }
+
+    // =========================================================================
+    // 10. INITIALIZATION ON LOAD
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      generateIosAppIcon();
+
+      const todayStr = getTodayISO();
+      document.getElementById('daily-date-picker').value = todayStr;
+
+      updateBannerStats();
+      renderDailyForm();
+      renderDailyCalendarGrid();
+      renderWeeklyMaintenance();
+      renderReportTab();
+      regenerateEmailDraft();
+      renderSubmissionHistory();
+    });
+  </script>
+</body>
+</html>
